@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<!-- 标题不能以 DSH Soul 开头：守护进程靠这个认灵魂窗口，认错了灵魂就回不到桌面 -->
+<title>DSH Ask</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #12151d; color: #e8eaf2; font: 14px/1.5 "Microsoft YaHei UI", sans-serif; }
+  /* 按钮永远在最下面看得见：上面的字再长也只截断，不把按钮挤出去 */
+  body { display: flex; flex-direction: column; padding: 14px 16px; border: 1px solid #47506a; }
+  body > div:first-child { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; flex-shrink: 0; }
+  #buttons { flex-shrink: 0; }
+  #detail { min-height: 0; }
+  #what { font-size: 15px; }
+  #more { color: #8b90a3; font-size: 12px; margin-left: 8px; }
+  /* 命令太长只显示开头三行，全文在会话窗口里 */
+  #detail { flex: 1; margin: 8px 0 10px; padding: 6px 8px; background: #0a0c11; color: #b8c2da; font: 12px/1.4 Consolas, monospace; overflow: hidden; word-break: break-all; }
+  #detail:empty { visibility: hidden; }
+  #buttons { display: flex; gap: 8px; }
+  button { padding: 4px 14px; font: inherit; color: #e8eaf2; background: #1e2330; border: 1px solid #333a4c; cursor: pointer; }
+  button:hover { background: #283043; }
+</style>
+</head>
+<body>
+<div><span id="what"></span><span id="more"></span></div>
+<div id="detail"></div>
+<div id="buttons"></div>
+<script>
+  const what = document.getElementById('what');
+  const detail = document.getElementById('detail');
+  const more = document.getElementById('more');
+  const buttons = document.getElementById('buttons');
+  const CHOICES = [['允许', 'allowed-once'], ['以后这类都允许', 'always'], ['不行', 'rejected']];
+
+  window.soulHost.onEvent((event) => {
+    if (event.kind !== 'ask') return;
+    const { card } = event;
+    const reason = card.reason || `执行“${card.toolName}”`;
+    const cut = reason.indexOf('：');
+    what.textContent = `想${cut === -1 ? reason : reason.slice(0, cut)}`;
+    detail.textContent = cut === -1 ? '' : reason.slice(cut + 1);
+    more.textContent = event.more ? `后面还有 ${event.more} 件` : '';
+    buttons.textContent = '';
+    for (const [label, outcome] of CHOICES) {
+      if (outcome === 'always' && !card.canAlways) continue;
+      const button = document.createElement('button');
+      button.textContent = label;
+      button.addEventListener('click', () => {
+        buttons.textContent = '';
+        window.soulHost.api('/approval', { approvalId: card.approvalId, outcome });
+      });
+      buttons.append(button);
+    }
+  });
+</script>
+</body>
+</html>

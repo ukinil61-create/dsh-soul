@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<!-- 标题不能以 DSH Soul 开头：守护进程靠这个认灵魂窗口 -->
+<title>DSH Drop</title>
+<style>
+  /* 完全透明的窗口接不住拖放；黑色 1% 在黑色壁纸上看不出来 */
+  html, body { margin: 0; height: 100%; background: rgba(0, 0, 0, .01); }
+</style>
+</head>
+<body>
+<script>
+  // 只接文件。在别的窗口里拖文字、拖窗口时，这里当作不存在
+  const carriesFiles = (event) => [...(event.dataTransfer?.types ?? [])].includes('Files');
+  let depth = 0;
+  addEventListener('dragenter', (event) => {
+    if (!carriesFiles(event)) return;
+    event.preventDefault();
+    if (depth++ === 0) window.soulHost.dragOver(true);
+  });
+  addEventListener('dragleave', (event) => {
+    if (!carriesFiles(event)) return;
+    if (--depth === 0) window.soulHost.dragOver(false);
+  });
+  addEventListener('dragover', (event) => {
+    if (!carriesFiles(event)) return;
+    event.preventDefault();
+    // 用 copy：不管拖的是什么，都不让来源把文件移走
+    event.dataTransfer.dropEffect = 'copy';
+  });
+  addEventListener('drop', (event) => {
+    event.preventDefault();
+    depth = 0;
+    window.soulHost.dragOver(false);
+    window.soulHost.drop([...event.dataTransfer.files].map((file) => window.soulHost.pathFor(file)));
+  });
+</script>
+</body>
+</html>

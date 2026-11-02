@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>DSH Soul</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #000; }
+  body.overlay, html.overlay { background: transparent; }
+  #light { position: fixed; inset: 0; width: 100%; height: 100%; }
+  #say, #you, #soul { position: fixed; color: #f1f3ff; font-family: "Microsoft YaHei UI", "Microsoft YaHei", sans-serif; }
+  #say {
+    transform: translateX(-50%); width: 46vw; height: 2em; padding: 0; background: none; border: 0; outline: 0; resize: none;
+    text-align: center; font-size: 24px; line-height: 1.5; color: #fff; caret-color: #fff; overflow: hidden;
+  }
+  /* 桌面上按回车出来的是一个真的对话框：方形，有底、有边、有提示 */
+  body #say, body.overlay #say {
+    box-sizing: border-box; width: min(620px, 60vw); max-width: none; height: 112px; padding: 14px 16px; text-align: left; font-size: 18px; line-height: 27px; overflow-y: auto;
+    background: #14161f; border: 1px solid #3a3f55; border-radius: 6px; caret-color: #aab4ff; box-shadow: none; text-shadow: none;
+  }
+  /* 从桌面呼出时桌面上已经有一团光了，浮层只要对话框 */
+  body.bare #light { visibility: hidden; }
+  body #say:focus { border-color: #5b6290; }
+  #say::placeholder { color: rgba(241, 243, 255, .38); }
+  #say.ghost { opacity: 0; pointer-events: none; caret-color: transparent; }
+  #you {
+    left: 60%; top: 81%; transform: translateX(-50%); width: 46vw; text-align: center; font-size: 19px; line-height: 1.5;
+    color: #c7cbd9; transition: opacity 1.2s ease;
+  }
+  /* 字幕：任何时候只有一条短句 */
+  #soul {
+    left: 60%; top: 69%; transform: translateX(-50%); width: 46vw; text-align: center;
+    font-size: 25px; line-height: 1.55; text-shadow: 0 0 18px rgba(170, 190, 255, .5), 0 1px 3px rgba(0, 0, 0, .9);
+    transition: opacity 1.2s ease;
+  }
+  .gone { opacity: 0; }
+
+  /* 工作区：没有标题栏和窗口按钮，是桌面上的一块区域。在壁纸层上，点击由 keeper 转交 */
+  #work {
+    position: fixed; left: 40%; right: 2.5%; top: 5%; bottom: 10%; display: flex; flex-direction: column; gap: 12px;
+    padding: 18px 20px; background: rgba(14, 16, 24, .78); border: 1px solid rgba(255, 186, 104, .28); border-radius: 4px;
+    color: #c6cad8; font: 14px/1.55 Consolas, "Microsoft YaHei UI", monospace; transform-origin: right center;
+    transition: opacity .5s ease, transform .5s ease; overflow: hidden;
+  }
+  #work.shut { opacity: 0; transform: scaleX(.9); }
+  #workHead { display: flex; justify-content: space-between; color: #ffba68; font-family: "Microsoft YaHei UI", sans-serif; }
+  #workClose { color: #fff; border-bottom: 1px solid currentColor; }
+  #workBody { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 4px; }
+  .step { display: grid; grid-template-columns: 1.4em minmax(0, 1fr); overflow-wrap: anywhere; }
+  .step b { font-weight: 400; color: #8e94a8; }
+  .step.running { color: #ffba68; }
+  .step.failed { color: #ff9b9b; }
+  .diff { margin: 4px 0 8px 1.4em; padding: 8px 10px; background: rgba(0, 0, 0, .45); border-radius: 3px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .diff .del { color: #ff9b9b; display: block; }
+  .diff .add { color: #8fe8b8; display: block; }
+  #busy {
+    position: fixed; left: 60%; top: 72%; transform: translateX(-50%); max-width: 60vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    color: #ffba68; font: 16px "Microsoft YaHei UI", sans-serif; transition: opacity .5s ease;
+  }
+  #busyMore { color: #fff; border-bottom: 1px solid currentColor; margin-left: .8em; }
+  /* 会话界面打开时光和回答让到左边 */
+  body.open #soul { left: 22%; top: 52%; width: 24vw; font-size: 19px; }
+  body.open #you { left: 22%; top: 84%; width: 24vw; }
+  /* 工作区打开时回答贴在工作区底部，不会压到图标上 */
+  body.workOpen #soul, body.workOpen #you { left: 68.75%; top: auto; bottom: 11%; width: 56vw; z-index: 2; padding: 10px 14px; text-align: left; box-sizing: border-box; }
+  body.workOpen #soul { font-size: 17px; background: rgba(14, 16, 24, .96); text-shadow: none; border-top: 1px solid rgba(255, 186, 104, .28); }
+  [hidden] { display: none !important; }
+
+  /* 浮层压在任意窗口上面，文字要自带深色底才读得清 */
+  .overlay #soul, .overlay #you, .overlay #say { left: 50%; width: fit-content; min-width: 2em; max-width: 46vw; text-shadow: none; background: rgba(12, 14, 22, .84); border-radius: 12px; box-shadow: 0 6px 28px rgba(0, 0, 0, .3); box-sizing: border-box; }
+  .overlay #say { top: 56%; width: 46vw; height: 54px; padding: 8px 16px; }
+  .overlay #soul { top: 54%; padding: 14px 22px; font-size: 22px; }
+  .overlay #you { top: 47%; padding: 5px 14px; color: #fff; font-size: 17px; }
+  .overlay #you.gone, .overlay #soul.gone { box-shadow: none; }
+</style>
+</head>
+<body>
+<canvas id="light" aria-hidden="true"></canvas>
+<div id="you" class="gone"></div>
+<div id="soul" class="gone"></div>
+<div id="busy" class="gone"><span id="busyText"></span><span id="busyMore">看细节</span></div>
+<div id="work" class="shut">
+  <div id="workHead"><span id="workTitle">正在做</span><span id="workClose">收起</span></div>
+  <div id="workBody"></div>
+</div>
+<textarea id="say" spellcheck="false" placeholder="对它说点什么，回车发送" hidden aria-label="对它说话"></textarea>
+<script src="figure-engine.js"></script>
+<script src="figure-presets.js"></script>
+<script src="light.js"></script>
+<script src="subtitle.js"></script>
+<script src="soul.js"></script>
+</body>
+</html>

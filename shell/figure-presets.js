@@ -1,0 +1,88 @@
+// 内置的几套光点形象。工作室可以以它们为起点改，改完另存，不会动到这里。
+
+window.SoulFigurePresets = [
+  {
+    id: 'flow',
+    name: '流光长发',
+    note: '长发是一直往下流的光，脸上只有两点亮光',
+    height: .66,
+    tint: .12,
+    layers: [
+      { kind: 'curve', name: '外侧长发', color: '#6f97ff', count: 900, width: .011, mirror: true, flow: .05, brightness: .9, twinkle: .25, sway: .012, glow: true, points: [[.02, -.41], [.17, -.37], [.25, -.2], [.27, 0], [.25, .2], [.2, .46]] },
+      { kind: 'curve', name: '中间长发', color: '#a4bcff', count: 760, width: .011, mirror: true, flow: .065, brightness: .95, twinkle: .25, sway: .016, glow: true, points: [[.03, -.4], [.13, -.33], [.19, -.18], [.2, .02], [.17, .24], [.13, .48]] },
+      { kind: 'curve', name: '内侧长发', color: '#5478f5', count: 520, width: .009, mirror: true, flow: .08, brightness: .85, twinkle: .3, sway: .02, glow: true, points: [[.01, -.4], [.08, -.34], [.13, -.22], [.13, -.06], [.1, .12], [.07, .36]] },
+      { kind: 'curve', name: '刘海', color: '#c8d6ff', count: 220, width: .005, mirror: true, flow: .03, brightness: .9, twinkle: .2, points: [[.005, -.4], [.05, -.31], [.06, -.23]] },
+      { kind: 'curve', name: '头饰', color: '#ffffff', count: 300, width: .004, mirror: true, brightness: 1, twinkle: .5, glow: true, points: [[0, -.44], [.1, -.42], [.19, -.34]] },
+      { kind: 'eye', name: '眼睛', color: '#dfe9ff', count: 240, width: .026, tall: 1.5, mirror: true, brightness: 1, twinkle: .08, points: [[.085, -.17]] },
+      { kind: 'curve', name: '嘴', color: '#e4edff', count: 50, width: .0015, role: 'mouth', brightness: .9, twinkle: 0, points: [[-.016, -.095], [0, -.09], [.016, -.095]] },
+    ],
+  },
+  {
+    id: 'constellation',
+    name: '星座',
+    note: '只有几十颗星和淡淡的连线，最克制',
+    height: .66,
+    tint: .08,
+    layers: [
+      { kind: 'stars', name: '星', color: '#e8efff', count: 620, width: .0035, mirror: true, brightness: 1, twinkle: .55, glow: true, points: [[.02, -.44], [.12, -.42], [.2, -.35], [.26, -.25], [.34, -.2], [.27, -.12], [.28, .02], [.3, .18], [.33, .34], [.22, .46], [.1, .36], [.13, .14], [.1, -.02], [.05, -.3]] },
+      { kind: 'curve', name: '外形连线', color: '#6f8fe8', count: 700, width: .0015, mirror: true, brightness: .55, twinkle: .4, points: [[.02, -.44], [.12, -.42], [.2, -.35], [.26, -.25], [.34, -.2], [.27, -.12], [.28, .02], [.3, .18], [.33, .34], [.22, .46]] },
+      { kind: 'curve', name: '内部连线', color: '#6f8fe8', count: 300, width: .0015, mirror: true, brightness: .4, twinkle: .4, points: [[.05, -.3], [.1, -.02], [.13, .14], [.1, .36]] },
+      { kind: 'eye', name: '眼睛', color: '#ffffff', count: 140, width: .018, tall: 1.5, mirror: true, brightness: 1, twinkle: .1, points: [[.085, -.17]] },
+      { kind: 'curve', name: '嘴', color: '#c9d8ff', count: 36, width: .0015, role: 'mouth', brightness: .75, twinkle: 0, points: [[-.014, -.095], [0, -.09], [.014, -.095]] },
+    ],
+  },
+  {
+    id: 'rim',
+    name: '逆光',
+    note: '身体是空的，只有边缘的光，下面散开消失，像逆光里的剪影',
+    height: .66,
+    tint: .12,
+    layers: [
+      { kind: 'curve', name: '外轮廓', color: '#9db6ff', count: 1500, width: .006, mirror: true, flow: .02, brightness: 1, twinkle: .2, sway: .012, glow: true, points: [[0, -.45], [.12, -.43], [.21, -.34], [.25, -.24], [.31, -.2], [.25, -.13], [.25, .02], [.27, .2], [.22, .47]] },
+      { kind: 'curve', name: '内发丝', color: '#6f8fe8', count: 700, width: .007, mirror: true, flow: .07, brightness: .75, twinkle: .35, sway: .018, points: [[.17, -.2], [.17, -.02], [.16, .18], [.12, .42]] },
+      { kind: 'curve', name: '头饰', color: '#ffffff', count: 320, width: .004, mirror: true, brightness: 1, twinkle: .5, glow: true, points: [[0, -.37], [.09, -.36], [.17, -.29]] },
+      { kind: 'eye', name: '眼睛', color: '#e8f0ff', count: 220, width: .025, tall: 1.5, mirror: true, brightness: 1, twinkle: .08, points: [[.085, -.17]] },
+      { kind: 'curve', name: '嘴', color: '#e4edff', count: 46, width: .0015, role: 'mouth', brightness: .9, twinkle: 0, points: [[-.016, -.095], [0, -.09], [.016, -.095]] },
+    ],
+  },
+  {
+    id: 'spirit',
+    name: '灵核',
+    note: '没有身体，一团柔光上面睁开眼，两侧带一点小耳翼',
+    height: .6,
+    tint: .2,
+    layers: [
+      { kind: 'orb', name: '光团', color: '#5f83f0', count: 1500, width: .29, flow: .05, brightness: .75, twinkle: .4, points: [[0, -.02]] },
+      { kind: 'orb', name: '内核', color: '#c8d6ff', count: 700, width: .14, flow: -.08, brightness: .85, twinkle: .4, glow: true, points: [[0, -.02]] },
+      { kind: 'curve', name: '耳翼', color: '#a9c0ff', count: 460, width: .007, mirror: true, flow: .1, brightness: .95, twinkle: .3, sway: .01, glow: true, points: [[.27, -.1], [.35, -.18], [.4, -.13], [.33, -.04]] },
+      { kind: 'eye', name: '眼睛', color: '#ffffff', count: 220, width: .028, tall: 1.5, mirror: true, brightness: 1, twinkle: .05, points: [[.085, -.06]] },
+      { kind: 'curve', name: '嘴', color: '#ffffff', count: 44, width: .0015, role: 'mouth', brightness: .95, twinkle: 0, points: [[-.016, .03], [0, .036], [.016, .03]] },
+    ],
+  },
+  {
+    id: 'eyes',
+    name: '只有眼睛',
+    note: '黑暗里的一双眼，周围飘着一点微尘',
+    height: .6,
+    tint: .12,
+    layers: [
+      { kind: 'orb', name: '微尘', color: '#6a8ae4', count: 1100, width: .46, flow: .02, brightness: .42, twinkle: .7, points: [[0, 0]] },
+      { kind: 'eye', name: '眼睛', color: '#eef3ff', count: 420, width: .046, tall: 1.35, mirror: true, brightness: 1, twinkle: .06, points: [[.13, -.02]] },
+      { kind: 'curve', name: '嘴', color: '#c9d8ff', count: 54, width: .0015, role: 'mouth', brightness: .7, twinkle: 0, points: [[-.025, .13], [0, .138], [.025, .13]] },
+    ],
+  },
+  {
+    id: 'halo',
+    name: '光环与落光',
+    note: '头上一圈光环，光从环上一直往下落，形成长发的感觉',
+    height: .66,
+    tint: .12,
+    layers: [
+      { kind: 'curve', name: '光环', color: '#ffffff', count: 620, width: .004, closed: true, flow: .04, brightness: 1, twinkle: .4, glow: true, points: [[0, -.46], [.16, -.43], [.21, -.39], [.16, -.35], [0, -.33], [-.16, -.35], [-.21, -.39], [-.16, -.43]] },
+      { kind: 'curve', name: '落光·外', color: '#6f97ff', count: 1100, width: .016, mirror: true, flow: .11, brightness: .9, twinkle: .4, sway: .018, glow: true, points: [[.2, -.38], [.26, -.15], [.27, .12], [.22, .47]] },
+      { kind: 'curve', name: '落光·内', color: '#a9c0ff', count: 780, width: .012, mirror: true, flow: .14, brightness: .9, twinkle: .4, sway: .022, glow: true, points: [[.13, -.34], [.17, -.12], [.16, .14], [.12, .42]] },
+      { kind: 'eye', name: '眼睛', color: '#e8f0ff', count: 230, width: .026, tall: 1.5, mirror: true, brightness: 1, twinkle: .08, points: [[.08, -.17]] },
+      { kind: 'curve', name: '嘴', color: '#e4edff', count: 46, width: .0015, role: 'mouth', brightness: .9, twinkle: 0, points: [[-.016, -.095], [0, -.09], [.016, -.095]] },
+    ],
+  },
+];

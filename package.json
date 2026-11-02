@@ -1,0 +1,25 @@
+{
+  "name": "dsh-desk",
+  "version": "0.1.0",
+  "description": "让 AI 住进你的桌面：整张壁纸就是它，真图标浮在上面。DeepSeek Harness 插件。",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "keywords": ["dsh", "dsh-plugin", "deepseek", "desktop", "wallpaper", "ai-companion", "windows"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ukinil61-create/dsh-soul.git"
+  },
+  "homepage": "https://github.com/ukinil61-create/dsh-soul#readme",
+  "os": ["win32"],
+  "license": "MIT",
+  "private": true
+}

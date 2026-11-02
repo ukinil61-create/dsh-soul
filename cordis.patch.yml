@@ -1,0 +1,6 @@
+# dsh-desk —— 桌面常驻面板
+#
+# id 必须全局唯一（与包名一致）。只有宿主半侧，界面用的是官方 Web 前端本身。
+- insert:
+    - id: dsh-desk
+      name: 'dsh-desk'

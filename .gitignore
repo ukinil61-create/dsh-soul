@@ -1,0 +1,10 @@
+# 由 install.ps1 编译出来
+keeper/*.exe
+# 第一版的备份，已经是一份完整快照
+*.zip
+node_modules/
+
+# 公开版的导出目录，它自己是另一个 git 仓库
+release/
+# 宣传片的产物：声音、帧、成片
+promo/out/
